@@ -1,5 +1,6 @@
 package gcc.main.logic;
 
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -42,6 +43,23 @@ class MatrixLogicsTest {
 
         assertEquals(1, packs.size());
         assertEquals(2, packs.get(0).getPeersToUpdate().size());
+    }
+
+    @Test
+    void shouldEndupWith3UniquePeers() {
+        var matrix = zeroMatrix();
+        matrix[0][2] = 1;
+        matrix[2][2] = 1;
+
+        List<Pack> packs = MatrixLogics.getPacks(matrix);
+
+        assertEquals(2, packs.size());
+        assertEquals(2, packs.get(0).getPeersToUpdate().size());
+        assertEquals(2, packs.get(1).getPeersToUpdate().size());
+
+        List<Pair<Integer, Integer>> pairs = MatrixLogics.peersToUpdateFromPacks(packs);
+
+        assertEquals(3, pairs.size());
     }
 
 }

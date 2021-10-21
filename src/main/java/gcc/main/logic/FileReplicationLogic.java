@@ -10,6 +10,10 @@ final public class FileReplicationLogic {
 
     public static int ticksTillReplicationComplete(int[][] matrix) {
 
+        List<Pair<Integer, Integer>> pairs = MatrixLogics.peersToUpdateFromPacks(
+                MatrixLogics.getPacks(matrix));
+
+
         return 0;
     }
 

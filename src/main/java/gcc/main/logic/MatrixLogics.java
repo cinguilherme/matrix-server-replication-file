@@ -3,7 +3,9 @@ package gcc.main.logic;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MatrixLogics {
 
@@ -19,6 +21,15 @@ public class MatrixLogics {
         }
 
         return packs;
+    }
+
+    public static List<Pair<Integer, Integer>> peersToUpdateFromPacks(List<Pack> packs) {
+        Set<Pair<Integer, Integer>> set = new HashSet<>();
+        packs.stream()
+             .map(p -> p.getPeersToUpdate())
+                .flatMap(l -> l.stream())
+                .forEach(p -> set.add(p));
+        return set.stream().toList();
     }
 
     private static List<Pair<Integer, Integer>> getPeers(int[][] matrix, Pair<Integer, Integer> active) {
