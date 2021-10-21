@@ -10,11 +10,21 @@ final public class FileReplicationLogic {
 
     public static int ticksTillReplicationComplete(int[][] matrix) {
 
-        List<Pair<Integer, Integer>> pairs = MatrixLogics.peersToUpdateFromPacks(
-                MatrixLogics.getPacks(matrix));
+        var count = 0;
+        while(true) {
 
+            List<Pair<Integer, Integer>> pairs = MatrixLogics.peersToUpdateFromPacks(
+                    MatrixLogics.getPacks(matrix));
+            if(pairs.size() == 0){
+                System.out.println("no more replications");
+                break;
+            }
 
-        return 0;
+            matrix = MatrixLogics.updatedMatrix(matrix, pairs);
+            count++;
+        }
+
+        return count;
     }
 
 

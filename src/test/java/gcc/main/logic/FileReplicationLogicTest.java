@@ -26,11 +26,9 @@ class FileReplicationLogicTest {
         var matrix = zeroMatrix();
         matrix[1][1] = 1;
 
-
         int actual = FileReplicationLogic.ticksTillReplicationComplete(matrix);
 
         assertEquals(2, actual);
-
     }
 
 }
