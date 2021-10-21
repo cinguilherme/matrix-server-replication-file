@@ -80,4 +80,16 @@ class MatrixLogicsTest {
         assertEquals(1, updateMatrix[1][2]);
     }
 
+    @Test
+    void shouldGetAllPointNeedingUpdate() {
+        var matrix = zeroMatrix();
+        matrix[0][2] = 1;
+        matrix[2][2] = 1;
+
+        List<Pair<Integer, Integer>> allPointsWithoutFile = MatrixLogics.getAllPointsWithoutFile(
+                matrix);
+
+        assertEquals(7, allPointsWithoutFile.size());
+    }
+
 }

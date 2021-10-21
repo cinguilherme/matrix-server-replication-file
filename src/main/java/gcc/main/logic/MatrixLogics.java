@@ -61,6 +61,18 @@ public class MatrixLogics {
         return peers;
     }
 
+    public static List<Pair<Integer, Integer>> getAllPointsWithoutFile(int[][] matrix) {
+        List all = new ArrayList();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                if(matrix[i][j] == 0){
+                    all.add(new Pair<>(i, j));
+                }
+            }
+        }
+        return all;
+    }
+
     private static boolean isThisPeerNeeded(int[][] matrix, int line, int col) {
         try {
             var v = matrix[line][col];
