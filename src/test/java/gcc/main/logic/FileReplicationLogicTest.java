@@ -1,22 +1,12 @@
 package gcc.main.logic;
 
+import gcc.main.logic.utils.Generators;
 import org.junit.jupiter.api.Test;
 
+import static gcc.main.logic.utils.Generators.zeroMatrix;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileReplicationLogicTest {
-
-    private int[][] zeroMatrix(int size) {
-        var matrix = new int[size][size];
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                matrix[i][j] = 0;
-            }
-        }
-
-        return matrix;
-    }
 
     @Test
     void shouldBe2() {

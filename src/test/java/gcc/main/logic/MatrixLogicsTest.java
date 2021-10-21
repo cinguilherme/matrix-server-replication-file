@@ -1,27 +1,15 @@
 package gcc.main.logic;
 
+import gcc.main.logic.utils.Generators;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static gcc.main.logic.utils.Generators.zeroMatrix;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixLogicsTest {
-
-    private int[][] zeroMatrix() {
-        var matrix = new int[3][3];
-        matrix[0][0] = 0;
-        matrix[0][1] = 0;
-        matrix[0][2] = 0;
-        matrix[1][0] = 0;
-        matrix[1][1] = 0;
-        matrix[1][2] = 0;
-        matrix[2][0] = 0;
-        matrix[2][1] = 0;
-        matrix[2][2] = 0;
-        return matrix;
-    }
 
     @Test
     void shouldHaveOnePackWith2Peers() {
@@ -43,21 +31,6 @@ class MatrixLogicsTest {
 
         assertEquals(1, packs.size());
         assertEquals(2, packs.get(0).getPeersToUpdate().size());
-    }
-
-    @Test
-    void shouldReplicateFilesAndHaveNewPacks() {
-        var matrix = zeroMatrix();
-        matrix[1][1] = 1;
-
-        List<Pack> packs = MatrixLogics.getPacks(matrix);
-        assertEquals(1, packs.size());
-
-        List<Pack> replicate = MatrixLogics.replicate(packs, 3);
-        assertEquals(4, replicate.size());
-
-        List<Pack> replicate2 = MatrixLogics.replicate(replicate, 3);
-        assertEquals(9, replicate2.size());
     }
 
     @Test

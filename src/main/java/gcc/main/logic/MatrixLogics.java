@@ -24,47 +24,6 @@ public class MatrixLogics {
         return packs;
     }
 
-    public static List<Pack> replicate(List<Pack> previous, int matrixLimits) {
-        List<Pack> replicated = new ArrayList<>();
-        for (int i = 0; i < previous.size(); i++) {
-            Pack pack = previous.get(i);
-            pack.getPeersToUpdate().stream().forEach(p -> {
-                Pair<Integer, Integer> newPoint = new Pair<>(p.getValue0(), p.getValue1());
-                var peers = produceReplicatePeers(newPoint, matrixLimits);
-                Pack newPack = new Pack(new Pair<>(p.getValue0(), p.getValue1()), peers);
-                replicated.add(newPack);
-            });
-        }
-        System.out.println(replicated);
-        return replicated;
-    }
-
-    private static boolean withinLimits(int v, int matrixLimits) {
-        return v >= 0 && v < matrixLimits;
-    }
-
-    private static List<Pair<Integer, Integer>> produceReplicatePeers(Pair<Integer, Integer> newPoint, int matrixLimits) {
-        List<Pair<Integer, Integer>> peers = new ArrayList<>();
-
-        if(withinLimits(newPoint.getValue0()-1, matrixLimits)) {
-            peers.add(new Pair<>(newPoint.getValue0()-1, newPoint.getValue1()));
-        }
-
-        if(withinLimits(newPoint.getValue0()+1, matrixLimits)) {
-            peers.add(new Pair<>(newPoint.getValue0()+1, newPoint.getValue1()));
-        }
-
-        if(withinLimits(newPoint.getValue1()-1, matrixLimits)) {
-            peers.add(new Pair<>(newPoint.getValue0(), newPoint.getValue1()-1));
-        }
-
-        if(withinLimits(newPoint.getValue1()+1, matrixLimits)) {
-            peers.add(new Pair<>(newPoint.getValue0(), newPoint.getValue1()+1));
-        }
-
-        return peers;
-    }
-
     public static List<Pair<Integer, Integer>> peersToUpdateFromPacks(List<Pack> packs) {
         Set<Pair<Integer, Integer>> set = new HashSet<>();
         packs.stream()
