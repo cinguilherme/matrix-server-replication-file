@@ -11,18 +11,19 @@ final public class FileReplicationLogic {
         List<Pair<Integer, Integer>> allPointsWithoutFile =
                 MatrixLogics.getAllPointsWithoutFile(matrix);
 
-        List<Pair<Integer, Integer>> pairs = MatrixLogics.peersToUpdateFromPacks(
-                MatrixLogics.getPacks(matrix));
+        List<Pack> packs = MatrixLogics.getPacks(matrix);
+
+        List<Pair<Integer, Integer>> allPointsWithFile = MatrixLogics.peersToUpdateFromPacks(packs);
 
         while(true) {
 
-            if(pairs.size() == 0){
-                System.out.println("no more replications");
+            if(allPointsWithFile.size() == 0){
+                System.out.println("no replications possible");
                 break;
             }
 
 
-            matrix = MatrixLogics.updatedMatrix(matrix, pairs);
+            matrix = MatrixLogics.updatedMatrix(matrix, allPointsWithFile);
             count++;
         }
 

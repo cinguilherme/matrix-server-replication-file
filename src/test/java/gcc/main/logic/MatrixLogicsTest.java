@@ -46,6 +46,21 @@ class MatrixLogicsTest {
     }
 
     @Test
+    void shouldReplicateFilesAndHaveNewPacks() {
+        var matrix = zeroMatrix();
+        matrix[1][1] = 1;
+
+        List<Pack> packs = MatrixLogics.getPacks(matrix);
+        assertEquals(1, packs.size());
+
+        List<Pack> replicate = MatrixLogics.replicate(packs, 3);
+        assertEquals(4, replicate.size());
+
+        List<Pack> replicate2 = MatrixLogics.replicate(replicate, 3);
+        assertEquals(9, replicate2.size());
+    }
+
+    @Test
     void shouldEndupWith3UniquePeers() {
         var matrix = zeroMatrix();
         matrix[0][2] = 1;
@@ -91,5 +106,7 @@ class MatrixLogicsTest {
 
         assertEquals(7, allPointsWithoutFile.size());
     }
+
+
 
 }
