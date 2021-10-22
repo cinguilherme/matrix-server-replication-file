@@ -1,6 +1,7 @@
 package gcc.main.logic;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @ToString
+@EqualsAndHashCode
 public class Pack {
 
     private Pair<Integer,Integer> activeServer;
