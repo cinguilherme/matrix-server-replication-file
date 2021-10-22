@@ -1,10 +1,9 @@
 package gcc.main.logic;
 
-import gcc.main.logic.utils.Generators;
 import org.junit.jupiter.api.Test;
 
 import static gcc.main.logic.utils.Generators.zeroMatrix;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileReplicationLogicTest {
 
@@ -20,7 +19,18 @@ class FileReplicationLogicTest {
     }
 
     @Test
-    void shouldBe2000(){
+    void shouldBe100() {
+
+        var matrix = zeroMatrix(100);
+        matrix[50][50] = 1;
+
+        int actual = FileReplicationLogic.ticksTillReplicationComplete(matrix);
+
+        assertEquals(100, actual);
+    }
+
+    @Test
+    void shouldBe2000() {
         int[][] matrix = zeroMatrix(2000);
 
         matrix[1000][1000] = 1;

@@ -8,32 +8,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ReplicationLogic {
 
     public static Replication replicatev2(Replication replication, int matrixLimits) {
 
-        System.out.println("actives");
-        System.out.println(replication.getActivePoints());
-
-        System.out.println("pending");
-        System.out.println(replication.getPendingPeers());
-
         var active = new HashSet(replication.getActivePoints());
         active.addAll(replication.getPendingPeers());
 
         var newActives = active.stream()
                                .toList();
-        System.out.println("new actives");
-        System.out.println(newActives);
-
 
         var newPeers = genPeers(newActives, matrixLimits);
-
-        System.out.println("new pendings");
-        System.out.println(newPeers);
 
         return new Replication(newActives, newPeers);
     }
@@ -90,7 +77,7 @@ public class ReplicationLogic {
                     replicated.add(newPack);
                 });
         }
-        System.out.println(replicated);
+        
         return new Replication();
     }
 
