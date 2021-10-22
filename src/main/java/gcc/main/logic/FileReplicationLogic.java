@@ -36,6 +36,7 @@ final public class FileReplicationLogic {
 
             replication = ReplicationLogic.replicatev2(replication, matrix.length);
             count++;
+            System.out.println("replication tick number " + count);
         }
 
         return count;

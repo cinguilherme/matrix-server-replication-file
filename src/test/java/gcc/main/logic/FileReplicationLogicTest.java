@@ -30,6 +30,17 @@ class FileReplicationLogicTest {
     }
 
     @Test
+    void shouldBe500() {
+
+        var matrix = zeroMatrix(500);
+        matrix[250][250] = 1;
+
+        int actual = FileReplicationLogic.ticksTillReplicationComplete(matrix);
+
+        assertEquals(500, actual);
+    }
+
+    @Test
     void shouldBe2000() {
         int[][] matrix = zeroMatrix(2000);
 
