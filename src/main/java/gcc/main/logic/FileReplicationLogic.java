@@ -3,6 +3,7 @@ package gcc.main.logic;
 import org.javatuples.Pair;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ final public class FileReplicationLogic {
                                                   .collect(Collectors.toList());
 
 
-        Replication replication = new Replication(activeServers, peers);
+        Replication replication = new Replication(activeServers, peers, new HashMap<>());
         if (replication.getPendingPeers()
                        .size() == 0) {
             return 0;

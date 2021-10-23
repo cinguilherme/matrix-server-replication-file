@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class ReplicationLogicTest {
                                                   .flatMap(Collection::stream)
                                                   .collect(Collectors.toList());
 
-        Replication replication = new Replication(activeServers, peers);
+        Replication replication = new Replication(activeServers, peers, new HashMap<>());
 
 
         Assertions.assertEquals(1, replication.getActivePoints()

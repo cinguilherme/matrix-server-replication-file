@@ -20,17 +20,43 @@ public class ReplicationLogic {
         var active = new HashSet(replication.getActivePoints());
         active.addAll(replication.getPendingPeers());
 
-        var newActives = active.stream()
-                .toList();
+        List<Pair<Integer, Integer>> newActives = active.stream()
+                                                        .toList();
         metricN.endMetric();
 
-        var newPeers = genPeers(newActives, matrixLimits);
+        List<Pair<Integer, Integer>> newPeers = genPeers(newActives, matrixLimits);
 
-        return new Replication(newActives, newPeers);
+        // there is no need to keep the active list evergrowing,
+        // we can discard the active which all peers are also active
+        var map = replication.getAllActive();
+        newActives.forEach(it -> map.put(it, 1));
+
+        List<Pair<Integer, Integer>> cleanedActives = discardFullReplicatedPoints(newActives, map);
+
+        return new Replication(cleanedActives, newPeers, map);
     }
 
-    private static List<Pair<Integer, Integer>> genPeers(List<Pair<Integer, Integer>> newActives,
-                                                         int matrixLimits) {
+    private static List<Pair<Integer, Integer>> discardFullReplicatedPoints(
+            List<Pair<Integer, Integer>> active, Map<Pair<Integer, Integer>, Integer> map) {
+
+        return active.stream()
+                     .filter(v -> !allPeersAlreadyActive(v, map))
+                     .collect(Collectors.toList());
+
+    }
+
+    private static boolean allPeersAlreadyActive(
+            Pair<Integer, Integer> v, Map<Pair<Integer, Integer>, Integer> map) {
+        var right = new Pair<>(v.getValue0() + 1, v.getValue1());
+        var left = new Pair<>(v.getValue0() - 1, v.getValue1());
+        var top = new Pair<>(v.getValue0(), v.getValue1() - 1);
+        var bot = new Pair<>(v.getValue0(), v.getValue1() + 1);
+
+        return map.get(right) == 1 && map.get(left) == 1 && map.get(top) == 1 && map.get(bot) == 1;
+    }
+
+    private static List<Pair<Integer, Integer>> genPeers(
+            List<Pair<Integer, Integer>> newActives, int matrixLimits) {
         var metricM = new MetricProfiling();
         metricM.startMetric("gem map");
         Map<Pair<Integer, Integer>, Integer> map = new HashMap<>();
@@ -41,20 +67,20 @@ public class ReplicationLogic {
         var metricF = new MetricProfiling();
         metricF.startMetric("filter pendings");
         List<Pair<Integer, Integer>> pairs = newActives.stream()
-                .map(v -> genPeerPerPoint(v, matrixLimits))
-                .flatMap(Collection::stream)
-                .filter(it -> map.get(it) == null)
-                .collect(Collectors.toSet())
-                .stream()
-                .toList();
+                                                       .map(v -> genPeerPerPoint(v, matrixLimits))
+                                                       .flatMap(Collection::stream)
+                                                       .filter(it -> map.get(it) == null)
+                                                       .collect(Collectors.toSet())
+                                                       .stream()
+                                                       .toList();
 
         metricF.endMetric();
 
         return pairs;
     }
 
-    private static List<Pair<Integer, Integer>> genPeerPerPoint(Pair<Integer, Integer> newPoint,
-                                                                int matrixLimits) {
+    private static List<Pair<Integer, Integer>> genPeerPerPoint(
+            Pair<Integer, Integer> newPoint, int matrixLimits) {
         List<Pair<Integer, Integer>> peers = new ArrayList<>();
 
         if (withinLimits(newPoint.getValue0() - 1, matrixLimits)) {
@@ -82,13 +108,13 @@ public class ReplicationLogic {
         for (int i = 0; i < previous.size(); i++) {
             Pack pack = previous.get(i);
             pack.getPeersToUpdate()
-                    .stream()
-                    .forEach(p -> {
-                        Pair<Integer, Integer> newPoint = new Pair<>(p.getValue0(), p.getValue1());
-                        var peers = produceReplicatePeers(newPoint, matrixLimits);
-                        Pack newPack = new Pack(new Pair<>(p.getValue0(), p.getValue1()), peers);
-                        replicated.add(newPack);
-                    });
+                .stream()
+                .forEach(p -> {
+                    Pair<Integer, Integer> newPoint = new Pair<>(p.getValue0(), p.getValue1());
+                    var peers = produceReplicatePeers(newPoint, matrixLimits);
+                    Pack newPack = new Pack(new Pair<>(p.getValue0(), p.getValue1()), peers);
+                    replicated.add(newPack);
+                });
         }
 
         return new Replication();
