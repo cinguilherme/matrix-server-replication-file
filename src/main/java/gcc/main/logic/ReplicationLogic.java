@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class ReplicationLogic {
 
     public static Replication replicatev2(Replication replication, int matrixLimits) {
+
         var metricN = new MetricProfiling();
         metricN.startMetric("gen new actives");
         var active = new HashSet(replication.getActivePoints());
@@ -48,7 +49,7 @@ public class ReplicationLogic {
                 .toList();
 
         metricF.endMetric();
-        
+
         return pairs;
     }
 
